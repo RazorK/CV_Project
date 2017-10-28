@@ -9,7 +9,7 @@ def get_train_valid_loader(data_dir,
                            batch_size,
                            random_seed,
                            category,
-                           augment=False,
+                           transform=None,
                            valid_size=0.1,
                            shuffle=True,
                            num_workers=4,
@@ -26,9 +26,9 @@ def get_train_valid_loader(data_dir,
     ------
     - data_dir: path directory to the dataset.
     - batch_size: how many samples per batch to load.
-    - augment: whether to apply the data augmentation scheme
-      mentioned in the paper. Only applied on the train split.
     - random_seed: fix seed for reproducibility.
+    - category: the category for the yelp dataset picture
+    - transform: transform function for pictures
     - valid_size: percentage split of the training set used for
       the validation set. Should be a float in the range [0, 1].
     - shuffle: whether to shuffle the train/validation indices.
@@ -44,29 +44,8 @@ def get_train_valid_loader(data_dir,
     error_msg = "[!] valid_size should be in the range [0, 1]."
     assert ((valid_size >= 0) and (valid_size <= 1)), error_msg
 
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225])
-
-    # define transforms
-    valid_transform = transforms.Compose([
-        transforms.ToTensor(),
-        normalize
-    ])
-    if augment:
-        train_transform = transforms.Compose([
-            transforms.RandomCrop(32, padding=4),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            normalize
-        ])
-    else:
-        train_transform = transforms.Compose([
-            transforms.ToTensor(),
-            normalize
-        ])
-
     # load the dataset
-    yelpDataset = dataset.YelpDataSet(data_dir, category)
+    yelpDataset = dataset.YelpDataSet(data_dir, category, transform)
     num_train = len(yelpDataset)
     indices = list(range(num_train))
     split = int(np.floor(valid_size * num_train))

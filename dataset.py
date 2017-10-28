@@ -1,12 +1,12 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 from tqdm import tqdm
 import MySQLdb
 import configure as cf
 from PIL import Image
 
 
-class TryDataSet(torch.utils.data.Dataset):
+class YelpDataSet(torch.utils.data.Dataset):
     def __init__(self, photo_dir, category, transform=None):
         self.photo_dir = photo_dir + '/photos'
         self.category = category

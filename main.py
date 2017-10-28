@@ -1,22 +1,11 @@
 import torch
-from dataset import TryDataSet
+from dataset import YelpDataSet
 import configure as cf
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
+import dataLoader as load
 
 if __name__ == "__main__":
-    a = TryDataSet(cf.photo_url, 'food')
-    sample = a[0]
-
-    print sample['stars']
-
-    pil2tensor = transforms.ToTensor()
-    img = pil2tensor(sample['image'])
-
-    def plot_image(tensor):
-        plt.figure()
-        plt.imshow(tensor.numpy().transpose(1, 2, 0))
-        plt.show()
-
-    plot_image(img)
-
+    train, val = load.get_train_valid_loader(cf.photo_url, 50, 32, 'food')
+    print train.__len__()
+    print val.__len__()
