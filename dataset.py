@@ -26,7 +26,7 @@ class YelpDataSet(torch.utils.data.Dataset):
             tem_dic['business_id'] = row[1]
             self.photo_id.append(tem_dic)
 
-        print('After search photo, find result: '+str(len(self.photo_id)))
+        print('After search photo, find result: ' + str(len(self.photo_id)))
         print('Start search stars for each photo.')
         # Get the stars with exact business
         for dic in tqdm(self.photo_id):
@@ -34,8 +34,8 @@ class YelpDataSet(torch.utils.data.Dataset):
             row = cursor.fetchone()
             dic['stars'] = row[0]
 
-        # self.photo_id: list of dict
-        #    dict keys: id, business_id, stars
+            # self.photo_id: list of dict
+            #    dict keys: id, business_id, stars
 
     def __len__(self):
         return len(self.photo_id)
@@ -45,5 +45,6 @@ class YelpDataSet(torch.utils.data.Dataset):
         image = Image.open(img_address).convert('RGB')
         if self.transform:
             image = self.transform(image)
-        dic = {'image': image, 'stars': float(self.photo_id[idx]['stars'])}
-        return dic
+        # dic = {'image': image, 'stars': float(self.photo_id[idx]['stars'])}
+        star = float(self.photo_id[idx]['stars'])
+        return image, star
