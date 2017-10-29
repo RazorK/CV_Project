@@ -12,7 +12,7 @@ class YelpDataSet(torch.utils.data.Dataset):
         self.category = category
         self.transform = transform
 
-        conn = MySQLdb.connect(host=cf.mysql_ip, user=cf.mysql_uesr, passwd=cf.mysql_pwd,
+        conn = MySQLdb.connect(host=cf.mysql_ip, user=cf.mysql_user, passwd=cf.mysql_pwd,
                                db=cf.mysql_db_name, charset="utf8")
         cursor = conn.cursor()
 
