@@ -11,6 +11,7 @@ def get_train_valid_loader(data_dir,
                            category,
                            transform=None,
                            valid_size=0.1,
+                           set_num = -1,
                            shuffle=True,
                            num_workers=4,
                            pin_memory=False):
@@ -48,13 +49,17 @@ def get_train_valid_loader(data_dir,
     yelpDataset = dataset.YelpDataSet(data_dir, category, transform)
     num_train = len(yelpDataset)
     indices = list(range(num_train))
-    split = int(np.floor(valid_size * num_train))
+    if set_num == -1:
+        set_sum = num_train
+    else:
+        set_sum = set_num
+    split = int(np.floor(valid_size * set_sum))
 
     if shuffle:
         np.random.seed(random_seed)
         np.random.shuffle(indices)
 
-    train_idx, valid_idx = indices[split:], indices[:split]
+    train_idx, valid_idx = indices[split:set_sum], indices[:split]
 
     train_sampler = smp.SubsetRandomSampler(train_idx)
     valid_sampler = smp.SubsetRandomSampler(valid_idx)

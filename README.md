@@ -74,6 +74,7 @@ Parameters:
   + 'food', 'inside', 'outside', 'menu', 'drink'
 + transform: transform function, default None
 + valid_size: float, 0~1, the radio of valid_size, default 0.1
++ set_num: set how many images want to load into the loader, default:-1, means all
 + shuffle: default True
 
 #### CV_Project.ipynb
