@@ -19,7 +19,7 @@ trainLoader, valLoader = \
     dataLoader.get_train_valid_loader(cf.photo_url, 50, 32, 'food', imgTransform, 0.1, -1)
 
 # define learningRate
-learningRate = 1e-2
+learningRate = 5 * 1e-4
 
 # Definition of our network.
 network = models.vgg16(pretrained=True)
@@ -43,7 +43,7 @@ optimizer = optim.SGD(network.parameters(), lr=learningRate)
 result = []
 # Train the previously defined model.
 result = train.train_model(network, criterion, optimizer, trainLoader, valLoader,
-                           n_epochs=20, use_gpu=True, notebook=False)
+                           n_epochs=10, use_gpu=True, notebook=False)
 print result
 
 utils.save_loss(result[2], result[3], './test_loss.png')
