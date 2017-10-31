@@ -1,10 +1,12 @@
 from torch.autograd import Variable
 import torch
-from tqdm import tqdm_notebook as tqdm
+from tqdm import tqdm_notebook as tqdm_nb
+from tqdm import tqdm
 
 
 # define train model
-def train_model(network, criterion, optimizer, trainLoader, valLoader, n_epochs=10, use_gpu=True, batch_size = 50):
+def train_model(network, criterion, optimizer, trainLoader, valLoader,
+                n_epochs=10, use_gpu=True, batch_size=50, notebook=True):
     train_accuracy = []
     train_loss = []
     val_accuracy = []
@@ -21,7 +23,10 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader, n_epochs=
         counter = 0
 
         # Make a pass over the training data.
-        t = tqdm(trainLoader, desc='Training epoch %d' % epoch)
+        if notebook:
+            t = tqdm_nb(trainLoader, desc='Training epoch %d' % epoch)
+        else:
+            t = tqdm(trainLoader, desc='Training epoch %d' % epoch)
         network.train()  # This is important to call before training!
         for (i, (inputs, stars)) in enumerate(t):
 

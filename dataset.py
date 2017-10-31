@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import Dataset
-from tqdm import tqdm_notebook as tqdm
+from tqdm import tqdm_notebook as tqdm_nb
+from tqdm import tqdm
 import MySQLdb
 import configure as cf
 from PIL import Image
