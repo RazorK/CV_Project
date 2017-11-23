@@ -62,9 +62,11 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             correct += (larger + littler).eq(2).sum()
             counter += inputs.size(0)
             t.set_postfix(loss=cum_loss / (1 + i), accuracy=100 * correct / counter)
+            accuracy = 100 * correct / counter
+            loss = cum_loss / (1 + i)
 
-        train_accuracy.append(100 * correct / counter)
-        train_loss.append(cum_loss / counter)
+        train_accuracy.append(accuracy)
+        train_loss.append(loss)
 
         # Make a pass over the validation data.
         correct = 0.0
@@ -95,7 +97,9 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             correct += (larger + littler).eq(2).sum()
             counter += inputs.size(0)
             t.set_postfix(loss=cum_loss / (1 + i), accuracy=100 * correct / counter)
+            accuracy = 100 * correct / counter
+            loss = cum_loss / (1 + i)
 
-        val_accuracy.append(100 * correct / counter)
-        val_loss.append(cum_loss / counter)
+        val_accuracy.append(accuracy)
+        val_loss.append(loss)
     return [train_accuracy, val_accuracy, train_loss, val_loss]
