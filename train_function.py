@@ -21,6 +21,8 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
         correct = 0.0
         cum_loss = 0.0
         counter = 0
+        temp_accuracy = 0
+        temp_loss = 0
 
         # Make a pass over the training data.
         if notebook:
@@ -61,12 +63,12 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             littler = (pre_star.view(batch_size) <= (stars.data + 0.5)).type(torch.IntTensor)
             correct += (larger + littler).eq(2).sum()
             counter += inputs.size(0)
-            t.set_postfix(loss=cum_loss / (1 + i), accuracy=100 * correct / counter)
-            accuracy = 100 * correct / counter
-            loss = cum_loss / (1 + i)
-
-        train_accuracy.append(accuracy)
-        train_loss.append(loss)
+            temp_accuracy = 100 * correct / counter
+            temp_loss = cum_loss / (1 + i)
+            t.set_postfix(loss=temp_loss, accuracy=temp_accuracy)
+            
+        train_accuracy.append(temp_accuracy)
+        train_loss.append(temp_loss)
 
         # Make a pass over the validation data.
         correct = 0.0
@@ -96,10 +98,10 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             littler = (pre_star.view(batch_size) <= (stars.data + 0.5)).type(torch.IntTensor)
             correct += (larger + littler).eq(2).sum()
             counter += inputs.size(0)
-            t.set_postfix(loss=cum_loss / (1 + i), accuracy=100 * correct / counter)
-            accuracy = 100 * correct / counter
-            loss = cum_loss / (1 + i)
+            temp_accuracy = 100 * correct / counter
+            temp_loss = cum_loss / (1 + i)
+            t.set_postfix(loss=temp_loss, accuracy=temp_accuracy)
 
-        val_accuracy.append(accuracy)
-        val_loss.append(loss)
+        val_accuracy.append(temp_accuracy)
+        val_loss.append(temp_loss)
     return [train_accuracy, val_accuracy, train_loss, val_loss]
