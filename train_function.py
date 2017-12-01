@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 # define train model
 def train_model(network, criterion, optimizer, trainLoader, valLoader,
-                n_epochs=10, use_gpu=True, batch_size=50, notebook=True):
+                n_epochs=10, use_gpu=True, batch_size=50, notebook=True, save_name = 'default'):
     train_accuracy = []
     train_loss = []
     val_accuracy = []
@@ -35,7 +35,7 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             # Wrap inputs, and targets into torch.autograd.Variable types.
             inputs = Variable(inputs)
             stars = Variable(stars.type(torch.FloatTensor))
-            if inputs.size(0) < batch_size or stars.size(0) < batch_size: break
+            if inputs.size(0) < batch_size or stars.size(0) < batch_size: continue
 
             if use_gpu:
                 inputs = inputs.cuda()
@@ -69,7 +69,9 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             
         train_accuracy.append(temp_accuracy)
         train_loss.append(temp_loss)
-
+        
+        if(save_name != 'default'):
+            torch.save(network.state_dict(), save_name + str(epoch))
         # Make a pass over the validation data.
         correct = 0.0
         cum_loss = 0.0
@@ -81,7 +83,7 @@ def train_model(network, criterion, optimizer, trainLoader, valLoader,
             # Wrap inputs, and targets into torch.autograd.Variable types.
             inputs = Variable(inputs)
             stars = Variable(stars.type(torch.FloatTensor))
-            if inputs.size(0) < batch_size or stars.size(0) < batch_size: break
+            if inputs.size(0) < batch_size or stars.size(0) < batch_size: continue
 
             if use_gpu:
                 inputs = inputs.cuda()

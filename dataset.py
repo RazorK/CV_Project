@@ -20,7 +20,10 @@ class YelpDataSet(torch.utils.data.Dataset):
         # Get all photo id with the label = category
         self.photo_id = []
         print category
-        cursor.execute('select id,business_id from photo where label=\'' + category + '\'')
+        if(category == 'all'):
+            cursor.execute('select id,business_id from photo')
+        else:
+            cursor.execute('select id,business_id from photo where label=\'' + category + '\'')
         for row in cursor.fetchall():
             tem_dic = dict()
             tem_dic['id'] = row[0]
